@@ -3,7 +3,7 @@ package utils
 import org.locationtech.jts.geom.Geometry
 import org.locationtech.jts.io.{WKBReader, WKBWriter}
 
-object WKBFormatter extends WKBFormatterInterface[Geometry] {
+object WKBFormatter extends WKBFormatterInterface[Geometry, String] {
   override def read(value: String): Geometry = {
     val arrayBytes = WKBReader.hexToBytes(value)
     new WKBReader().read(arrayBytes)
@@ -14,6 +14,6 @@ object WKBFormatter extends WKBFormatterInterface[Geometry] {
   }
 }
 
-object GeometryFormatter extends GeometryFormatterFactory[Geometry]{
-  override val wkbFormatter: WKBFormatterInterface[Geometry] = WKBFormatter
+object GeometryFormatter extends GeometryFormatterFactory[Geometry, String]{
+  override val wkbFormatter: WKBFormatterInterface[Geometry, String] = WKBFormatter
 }

@@ -11,7 +11,7 @@ object PostGIS {
   val port = 5432
   val dbname = "postgres"
   val user = "postgres"
-  val password = ""
+  val password = "postgres"
 
   println("add connection")
   ConnectionPool.singleton(s"jdbc:postgresql://$host:$port/$dbname", user, password)

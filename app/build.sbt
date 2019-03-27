@@ -24,7 +24,8 @@ lazy val root = (project in file("."))
   )
   .aggregate(
     core,
-    jst
+    jst,
+    gdal
   )
 
 lazy val core = (project in file("core"))
@@ -42,5 +43,15 @@ lazy val jst = (project in file("jst"))
     name := "jst",
     libraryDependencies ++= (commonLibrary ++
       Seq("org.locationtech.jts" % "jts-core" % "1.16.1"))
+  )
+  .dependsOn(core)
+
+lazy val gdal = (project in file("gdal"))
+  .enablePlugins(JmhPlugin)
+  .settings(
+    commonSettings,
+    name := "gdal",
+    libraryDependencies ++= (commonLibrary ++
+      Seq("org.gdal" % "gdal" % "2.4.0"))
   )
   .dependsOn(core)

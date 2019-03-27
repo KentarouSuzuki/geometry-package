@@ -7,12 +7,12 @@ trait GeometryFormatterInterface[Geometry, A] {
   def write(geom: Geometry): A
 }
 
-trait WKBFormatterInterface[Geometry] extends GeometryFormatterInterface[Geometry, String]
+trait WKBFormatterInterface[Geometry, A] extends GeometryFormatterInterface[Geometry, A]
 
-trait GeometryFormatterFactory[Geometry]{
-  val wkbFormatter: WKBFormatterInterface[Geometry]
+trait GeometryFormatterFactory[Geometry, A]{
+  val wkbFormatter: WKBFormatterInterface[Geometry, A]
 
-  def apply(fileType: FileType) = fileType match {
+  def apply(fileType: FileType): WKBFormatterInterface[Geometry, A] = fileType match {
     case WKB => wkbFormatter
   }
 }

@@ -2,13 +2,13 @@ package usecases.repositories
 
 import entities.Station
 import infrastructures.db.PostGIS
-import org.locationtech.jts.geom.Geometry
+import org.gdal.ogr.Geometry
 import scalikejdbc.WrappedResultSet
 import skinny.orm.SkinnyMapper
 import utils.Enums.GeometryFileTypes.WKB
 import utils.GeometryFormatter
 
-object StationRepository extends StationRepositoryInterface[Station, Geometry, String] with SkinnyMapper[Station] {
+object StationRepository extends StationRepositoryInterface[Station, Geometry, Array[Byte]] with SkinnyMapper[Station] {
   override val connectionPoolName = PostGIS.DB_NAME
   override lazy val defaultAlias = createAlias("s")
   override val columnNames = Seq("id", "name", "company_name", "railway_name", "company_type", "start_year", "end_year", "lat", "lng", "geom")
@@ -25,8 +25,8 @@ object StationRepository extends StationRepositoryInterface[Station, Geometry, S
     endYear = rs.int(n.endYear),
     lat = rs.float(n.lat),
     lng = rs.float(n.lng),
-    geom = wkbFormatter.read(rs.string(n.geom))
+    geom = wkbFormatter.read(rs.bytes(n.geom))
   )
 
-  def within(polygon: Geometry): List[Station] = findAll().filter(_.geom.within(polygon))
+  def within(polygon: Geometry): List[Station] = findAll().filter(_.geom.Within(polygon))
 }
