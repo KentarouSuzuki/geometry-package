@@ -25,7 +25,8 @@ lazy val root = (project in file("."))
   .aggregate(
     core,
     jst,
-    gdal
+    gdal,
+    geotrellis
   )
 
 lazy val core = (project in file("core"))
@@ -53,5 +54,15 @@ lazy val gdal = (project in file("gdal"))
     name := "gdal",
     libraryDependencies ++= (commonLibrary ++
       Seq("org.gdal" % "gdal" % "2.4.0"))
+  )
+  .dependsOn(core)
+
+lazy val geotrellis = (project in file("geotrellis"))
+  .enablePlugins(JmhPlugin)
+  .settings(
+    commonSettings,
+    name := "geotrellis",
+    libraryDependencies ++= (commonLibrary ++
+      Seq("org.locationtech.geotrellis" %% "geotrellis-vector" % "2.2.0"))
   )
   .dependsOn(core)
