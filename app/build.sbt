@@ -63,6 +63,7 @@ lazy val geotrellis = (project in file("geotrellis"))
     commonSettings,
     name := "geotrellis",
     libraryDependencies ++= (commonLibrary ++
-      Seq("org.locationtech.geotrellis" %% "geotrellis-vector" % "2.2.0"))
+      Seq("org.locationtech.geotrellis" %% "geotrellis-vector" % "2.2.0",
+        "org.locationtech.jts" % "jts-core" % "1.16.1"))
   )
   .dependsOn(core)

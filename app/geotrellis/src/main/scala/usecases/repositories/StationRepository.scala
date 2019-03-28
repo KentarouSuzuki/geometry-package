@@ -1,7 +1,7 @@
 package usecases.repositories
 
 import entities.Station
-import geotrellis.vector.Geometry
+import geotrellis.vector.{Geometry, Point}
 import infrastructures.db.PostGIS
 import scalikejdbc.WrappedResultSet
 import skinny.orm.SkinnyMapper
@@ -9,7 +9,7 @@ import utils.GeometryFormatter
 import scalikejdbc._
 import utils.Enums.GeometryFileTypes.WKB
 
-object StationRepository extends StationRepositoryInterface[Station, Geometry, Array[Byte]] with SkinnyMapper[Station] {
+object StationRepository extends StationRepositoryInterface[Station, Geometry, String] with SkinnyMapper[Station] {
   override val connectionPoolName = PostGIS.DB_NAME
   override lazy val defaultAlias = createAlias("s")
   override val columnNames = Seq("id", "name", "company_name", "railway_name", "company_type", "start_year", "end_year", "lat", "lng", "geom")
@@ -26,8 +26,8 @@ object StationRepository extends StationRepositoryInterface[Station, Geometry, A
     endYear = rs.int(n.endYear),
     lat = rs.float(n.lat),
     lng = rs.float(n.lng),
-    geom = wkbFormatter.read(rs.bytes(n.geom))
+    geom = wkbFormatter.read(rs.string(n.geom)).as[Point].get
   )
 
-  def within(polygon: Geometry): List[Station] = findAll().filter(_.geom.withinDistance(polygon, 0))
+  override def within(polygon: Geometry): List[Station] = findAll().filter(_.geom.withinDistance(polygon, 0))
 }

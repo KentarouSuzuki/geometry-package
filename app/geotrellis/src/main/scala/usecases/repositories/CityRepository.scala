@@ -1,14 +1,14 @@
 package usecases.repositories
 
 import entities.City
+import geotrellis.vector.{Geometry, MultiPolygon}
 import infrastructures.db.PostGIS
-import geotrellis.vector.Geometry
 import scalikejdbc._
 import skinny.orm.SkinnyMapper
 import utils.Enums.GeometryFileTypes.WKB
 import utils.GeometryFormatter
 
-object CityRepository extends CityRepositoryInterface[City, Geometry, Array[Byte]] with SkinnyMapper[City]{
+object CityRepository extends CityRepositoryInterface[City, Geometry, String] with SkinnyMapper[City]{
   override val connectionPoolName = PostGIS.DB_NAME
   override lazy val defaultAlias = createAlias("c")
   override val columnNames = Seq("id", "name", "city_code", "prefecture", "population", "geom")
@@ -22,7 +22,7 @@ object CityRepository extends CityRepositoryInterface[City, Geometry, Array[Byte
       cityCode = rs.string(n.cityCode),
       prefecture = rs.string(n.prefecture),
       population = rs.int(n.population),
-      geom = wkbFormatter.read(rs.bytes(n.geom))
+      geom = wkbFormatter.read(rs.string(n.geom)).as[MultiPolygon].get
     )}
 
   override def findByCityCode(code: Seq[String]): Seq[City] =
