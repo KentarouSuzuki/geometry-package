@@ -9,7 +9,7 @@ object PostGIS {
   val driver = "org.postgresql.Driver"
   val host = "localhost"
   val port = 5432
-  val dbname = "postgres"
+  val dbname = "gis"
   val user = "postgres"
   val password = "postgres"
 

@@ -1,13 +1,6 @@
 version: '3'
 services:
   postgis:
-    image: mdillon/postgis:9.5-alpine
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: gis
-      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --locale=C"
+    build: ./post-gis
     ports:
       - "5432:5432"
-    volumes:
-      - ./post-gis/data:/var/lib/postgresql/data
