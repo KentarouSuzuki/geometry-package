@@ -2,7 +2,8 @@ lazy val scala = "2.12.8"
 
 lazy val commonSettings = Seq(
   version := "v0.0.1",
-  scalaVersion := "2.12.8"
+  scalaVersion := "2.12.8",
+  mainClass := Some("ApplicationMain")
 )
 
 lazy val commonLibrary = Seq(
