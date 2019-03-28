@@ -16,8 +16,6 @@ object CityRepository extends CityRepositoryInterface[City, Geometry, Array[Byte
 
   override def tableName = "city"
   override def extract(rs: WrappedResultSet, n: scalikejdbc.ResultName[City]): City = {
-    println(rs.string(n.geom))
-    println(rs.bytes(n.geom))
     City(
       id = rs.int(n.id),
       name = rs.string(n.name),

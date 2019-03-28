@@ -1,10 +1,10 @@
 package usecases.interactor
 
-import usecases.repositories.{CityRepository, StationRepository}
+import usecases.repositories._
 
 object StationService {
   val city = CityRepository
-  val station = StationService
+  val station = StationRepository
 
   def stationIn(cityCode: String) = city.findByCityCode(cityCode::Nil).foreach{target =>
     StationRepository.within(target.geom).foreach{s =>
