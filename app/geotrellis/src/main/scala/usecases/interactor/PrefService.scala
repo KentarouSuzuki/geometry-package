@@ -1,12 +1,15 @@
 package usecases.interactor
 
+import org.openjdk.jmh.annotations._
 import usecases.repositories.CityRepository
 
 import scala.util.Try
 
-object PrefService {
+@State(Scope.Thread)
+class PrefService {
   val repository = CityRepository
 
+  @Benchmark
   def uniteFromCity(): Unit = repository.partitionByPrefecture.foreach{case (k, v) =>
     if (v.length == 1){v.head.geom}
     else {

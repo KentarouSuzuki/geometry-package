@@ -1,12 +1,16 @@
 package usecases.interactor
 
-import usecases.repositories.{CityRepository, StationRepository}
+import org.openjdk.jmh.annotations._
 
-object StationService {
+import usecases.repositories._
+
+@State(Scope.Thread)
+class StationService {
   val city = CityRepository
   val station = StationRepository
 
-  def stationIn(cityCode: String) = city.findByCityCode(cityCode::Nil).foreach{target =>
+  @Benchmark
+  def stationInChiyoda() = city.findByCityCode(Seq("13101")).foreach{target =>
     station.within(target.geom).foreach{s =>
       println(s"${s.railwayName}${s.name}(${s.companyName})")
     }
